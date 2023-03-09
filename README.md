@@ -1,2 +1,2 @@
 # devops-fully-automated
-A DevOps project with fully automation, which can help the learners and experienced people to setup the CICD pipeline with full automation.
+A DevOps project with full automation. This project is designed to help learners and experienced people setup a CI/CD pipeline with full automation.
