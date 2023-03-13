@@ -178,7 +178,8 @@
             - Collecting metrics period in seconds: **15**
             - Click on Save
 
-    1)	Click on Manage Jenkins --> Configure System
+         3)	Click on Manage Jenkins --> Configure System
+             - Go to section slack
              - Go to section Slack
              - Use new team subdomain & integration token credentials created in the above slack joining step
 	Workspace: **Replace with Team Subdomain value** (created above)
