@@ -93,7 +93,6 @@
     - select **Install without restart**
     - Once all plugins are installed, select **Restart Jenkins when installation is complete and no jobs are running**
 
-
 3)  #### Pipeline creation:
     - Click on **New Item**
     - Enter an item name: **app-cicd-pipeline** & select the category as **Pipeline**
@@ -104,7 +103,6 @@
         - Branch Specifier (blank for 'any'): */main
         - Script Path: Jenkinsfile
     - Save
-
 
 4)  #### Global tools configuration:
     - Click on Manage Jenkins --> Global Tool Configuration
@@ -166,7 +164,6 @@
             - Description: slack-token
             - Click on Create                 
 
-    
 6)  #### Configure system:    
 
         1)  - Click on Manage Jenkins --> Global Tool Configuration
@@ -207,7 +204,7 @@ Copy your Nexus Public IP Address and paste on the browser = http:://NexusServer
 
 1)  #### Setting up password:
     - SSH into Nexus server
-    - Execute `sudo cat /opt/nexus/sonatype-work/nexus3/admin.password`
+    - Execute 'sudo cat /opt/nexus/sonatype-work/nexus3/admin.password'
     - Copy the default password
     - Now login into Nexus console with the username: admin & password (copied from the SSH above)
     - Once signed in fill the below details in the setup wizard
@@ -293,7 +290,7 @@ Copy your Grafana Public IP Address and paste on the browser = http:://GrafanaSe
 1) #### Add jenkins webhook to github
     - Access your repo **devops-fully-automated** on github
     - Goto Settings --> Webhooks --> Click on Add webhook 
-    - Payload URL: **http://REPLACE-JENKINS-SERVER-PUBLIC-IP:8080/github-webhook/**             (Note: The IP should be public as GitHub is outside of the AWS VPC where Jenkins server is hosted)
+    - Payload URL: **http://REPLACE-JENKINS-SERVER-PUBLIC-IP:8080/github-webhook/**   (Note: The IP should be public as GitHub is outside of the AWS VPC where Jenkins server is hosted)
     - Click on Add webhook
 
 2) #### Configure on the Jenkins side to pull based on the event
