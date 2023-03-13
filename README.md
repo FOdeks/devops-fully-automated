@@ -189,7 +189,7 @@
 
 ### SonarQube setup
 
-Copy your SonarQube Public IP Address and paste on the browser = ExternalIP:9000
+Copy your SonarQube Public IP Address and paste on the browser = http:://SonarQubeServerExternalIP:9000
 
 1)  #### Jenkins webhook in SonarQube:
     - Login into SonarQube
