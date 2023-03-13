@@ -266,7 +266,7 @@ Copy your Grafana Public IP Address and paste on the browser = http:://GrafanaSe
         - Click on "Import"
         - Download the required NodeExporter dashboard JSON in the link https://grafana.com/api/dashboards/1860/revisions/27/download               ( #Ref: https://grafana.com/grafana/dashboards/1860-node-exporter-full/)
         - Click on Upload JSON file and upload the file downloaded in the above step        -
-        - Scrol down to "Prometheus" and select the "Data Source" you defined ealier which is "Prometheus"
+        - Scroll down to "Prometheus" and select the "Data Source" you defined earlier which is "Prometheus"
         - CLICK on "Import"
         - Save
     - Refresh your Grafana Dashbaord 
