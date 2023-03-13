@@ -8,57 +8,57 @@
     Fork GitHub Repository by using the existing repo "devops-fully-automated" (https://github.com/cvamsikrishna11/devops-fully-automated)     
     - Go to GitHub (github.com)
     - Login to your GitHub Account
-    - **Fork repository "devops-fully-automated" (https://github.com/cvamsikrishna11/devops-fully-automated) & name it "devops-fully-automated"**
-    - Clone your newly created repo to your local
+    - **Fork repository "devops-fully-automated"** (https://github.com/cvamsikrishna11/devops-fully-automated) **& name it "devops-fully-automated"**
+    - Clone your newly created repo to your local drive
 
 2) ###### Jenkins/Maven/Ansible
-    - Create an **Amazon Linux 2 VM** instance and call it "Jenkins"
+    - Create an **Amazon Linux 2 VM** instance and call it "jenkins"
     - Instance type: t2.large
-    - Security Group (Open): 8080, 9100 and 22 to 0.0.0.0/0
+    - Security Group (Open): 8080, 9100 and 22 to 0.0.0.0/0 (Jenkins port - 8080; Prometheus will connect to Node Exporter using TCP port 9100. Node Exporter is a Prometheus exporter for server level and OS level metrics with configurable metric collectors. It helps us in measuring various server resources such as RAM, disk space, and CPU utilization; SSH port - 22)
     - Key pair: Select or create a new keypair
-    - **Attach Jenkins server with IAM role having "AdministratorAccess"**
+    - **Attach jenkins server with IAM role having "AdministratorAccess"**
     - User data (Copy the following user data): https://github.com/cvamsikrishna11/devops-fully-automated/blob/installations/jenkins-maven-ansible-setup.sh
     - Launch Instance
     - After launching this Jenkins server, attach a tag as **Key=Application, value=jenkins**
 
 3) ###### SonarQube
-    - Create an Create an **Ubuntu 20.04** VM instance and call it "SonarQube"
+    - Create an Create an **Ubuntu 20.04** VM instance and call it "sonarqube"
     - Instance type: t2.medium
-    - Security Group (Open): 9000, 9100 and 22 to 0.0.0.0/0
+    - Security Group (Open): 9000, 9100 and 22 to 0.0.0.0/0 (SonarQube port - 9000)
     - Key pair: Select or create a new keypair
     - User data (Copy the following user data): https://github.com/cvamsikrishna11/devops-fully-automated/blob/installations/sonarqube-setup.sh
     - Launch Instance
 
 4) ###### Nexus
-    - Create an **Amazon Linux 2** VM instance and call it "Nexus"
+    - Create an **Amazon Linux 2** VM instance and call it "nexus"
     - Instance type: t2.medium
-    - Security Group (Open): 8081, 9100 and 22 to 0.0.0.0/0
+    - Security Group (Open): 8081, 9100 and 22 to 0.0.0.0/0 (Nexus port - 8081)
     - Key pair: Select or create a new keypair
     - User data (Copy the following user data): https://github.com/cvamsikrishna11/devops-fully-automated/blob/installations/nexus-setup.sh
     - Launch Instance
 
 5) ###### EC2 (Dev/Stage/Prod)
-    - Create 6 **Amazon Linux 2** VM instances
+    - Create 3 **Amazon Linux 2** VM instances and call it "web-server-"
     - Instance type: t2.micro
     - Security Group (Open): 8080, 9100 and 22 to 0.0.0.0/0
     - Key pair: Select or create a new keypair
     - User data (Copy the following user data): https://github.com/cvamsikrishna11/devops-fully-automated/blob/installations/deployment-servers-setup.sh
-    - Launch Instance
-    - After launching this Jenkins servers, attach a tag as **Key=Environment, value=dev/stage/prod** (out of 6, each 2 instances could be tagged as one env)
+    - Launch Instance (rename the instances; **append dev/stage/prod to "web-server-" for each instance**)
+    - After launching this Jenkins servers, attach a tag as **Key=Environment, value=dev/stage/prod** (each instance should be tagged as one environment)
 
 6) ###### Prometheus
-    - Create Amazon Linux 2 VM instance and call it "Prometheus"
+    - Create Amazon Linux 2 VM instance and call it "prometheus"
     - Instance type: t2.micro
-    - Security Group (Open): 9090 and 22 to 0.0.0.0/0
+    - Security Group (Open): 9090 and 22 to 0.0.0.0/0 (Prometheus port - 9090)
     - Key pair: Select or create a new keypair
     - **Attach Jenkins server with IAM role having "AmazonEC2ReadOnlyAccess"**
     - User data (Copy the following user data): https://github.com/cvamsikrishna11/devops-fully-automated/blob/installations/prometheus-setup.sh
     - Launch Instance
 
 7) ###### Grafana
-    - Create an **Ubuntu 20.04** VM instance and call it "Grafana"
+    - Create an **Ubuntu 20.04** VM instance and call it "grafana"
     - Instance type: t2.micro
-    - Security Group (Open): 3000 and 22 to 0.0.0.0/0
+    - Security Group (Open): 3000 and 22 to 0.0.0.0/0 (Grafana port - 3000)
     - Key pair: Select or create a new keypair
     - User data (Copy the following user data): https://github.com/cvamsikrishna11/devops-fully-automated/blob/installations/grafana-setup.sh
     - Launch Instance
@@ -70,31 +70,31 @@
 
 ### Jenkins setup
 1) #### Access Jenkins
-    Copy your Jenkins Public IP Address and paste on the browser = ExternalIP:8080
+    Copy your Jenkins Public IP Address and paste on the browser = External IP:8080
     - Login to your Jenkins instance using your Shell (GitBash or your Mac Terminal)
     - Copy the Path from the Jenkins UI to get the Administrator Password
-        - Run: `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
+        - Run: 'sudo cat /var/lib/jenkins/secrets/initialAdminPassword'
         - Copy the password and login to Jenkins
     - Plugins: Choose Install Suggested Plugings 
     - Provide 
         - Username: **admin**
         - Password: **admin**
-        - Name and Email can also be admin. You can use `admin` all, as its a poc.
+        - Name and Email can also be admin. You can use 'admin' all, as its a poc.
     - Continue and Start using Jenkins
 
 2)  #### Plugin installations:
     - Click on "Manage Jenkins"
-    - Click on "Plugin Manager"
-    - Click "Available"
-    - Search and Install the following Plugings "Install Without Restart"
+    - Click on "Manage Plugins"
+    - Click "Available Plugins"
         - **SonarQube Scanner**
         - **Prometheus metrics**
         - **CloudBees Disk Usage Simple**
         - **Slack Notification**
+    - select **Install without restart**
     - Once all plugins are installed, select **Restart Jenkins when installation is complete and no jobs are running**
 
 
-3)  #### Pipeline creation
+3)  #### Pipeline creation:
     - Click on **New Item**
     - Enter an item name: **app-cicd-pipeline** & select the category as **Pipeline**
     - Now scroll-down and in the Pipeline section --> Definition --> Select Pipeline script from SCM
@@ -109,7 +109,7 @@
 4)  #### Global tools configuration:
     - Click on Manage Jenkins --> Global Tool Configuration
 
-        **JDK** --> Add JDK --> Make sure **Install automatically** is enabled --> 
+        **JDK** --> Add JDK --> Name is 'localJdk' --> Make sure **Install automatically**  is enabled --> 
         
         **Note:** By default the **Install Oracle Java SE Development Kit from the website** make sure to close that option by clicking on the image as shown below.
 
@@ -123,6 +123,7 @@
     - **Maven** --> Add Maven --> Make sure **Install automatically** is enabled --> Install from Apache --> Fill the below values
         * Name: **localMaven**
         * Version: Keep the default version as it is 
+    - click on Save
 
 5)  #### Credentials setup(SonarQube, Nexus, Ansible, Slack):
     - Click on Manage Jenkins --> Manage Credentials --> Global credentials (unrestricted) --> Add Credentials
@@ -171,7 +172,8 @@
         1)  - Click on Manage Jenkins --> Global Tool Configuration
             - Go to section SonarQube servers --> **Add SonarQube **
             - Name: **SonarQube**
-            - Server URL: http://REPLACE-WITH-SONARQUBE-SERVER-PRIVATE-IP:9000          (replace SonarQube privat IP here)
+            - Server URL: http://REPLACE-WITH-SONARQUBE-SERVER-PRIVATE-IP:9000  (replace SonarQube with private IP here)
+            - Server authentication token: select 'sonarqube-token'
             - Click on Save    
 
         2)  - Click on Manage Jenkins --> Configure System
@@ -183,7 +185,7 @@
             - Go to section Slack
             - Use new team subdomain & integration token credentials created in the above slack joining step
             - Workspace: **Replace with Team Subdomain value** (created above)
-            - Credentials: select the slack-token credentials (created above) 
+            - Credentials: select 'slack-token' credentials (created above) 
             - Default channel / member id: #general
             - Click on Save  
 
@@ -195,7 +197,7 @@ Copy your SonarQube Public IP Address and paste on the browser = ExternalIP:9000
     - Login into SonarQube
     - Go to Administration --> Configuration --> Webhooks --> Click on Create
     - Name: Jenkins-Webhook
-    - URL: http://REPLACE-WITH-JENKINS-PRIVATE-IP:8080/sonarqube-webhook/           (replace Jenkins private IP here)
+    - URL: http://REPLACE-WITH-JENKINS-PRIVATE-IP:8080/sonarqube-webhook/ (replace Jenkins private IP here)
     - Click on Create
 
 
@@ -239,7 +241,6 @@ Note: Prometheus setup is also full automated, so just verifying the health of s
     - Once prometheus accessed --> Status --> Configuration (for the config file verification)
    
 
- 
 
 ### Grafana setup
 
