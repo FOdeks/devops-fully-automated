@@ -126,7 +126,7 @@
 5)  #### Credentials setup(SonarQube, Nexus, Ansible, Slack):
     - Click on Manage Jenkins --> Manage Credentials --> Global credentials (unrestricted) --> Add Credentials
 
-        1)  ###### SonarQube secret token (sonarqube-token)
+          ###### SonarQube secret token (sonarqube-token)
             - Kind: Secret text :
                     Generating SonarQube secret token
                     - Login to your SonarQube server (http://sonarserver-public-ip:9000, with the credentials username: **admin** & password: **admin**)
@@ -139,7 +139,7 @@
             - Description: sonarqube-token
             - Click on Create
 
-        2)  ###### Nexus username & password (nexus-credentials)
+          ###### Nexus username & password (nexus-credentials)
             - Kind: Username with password                  
             - Username: admin
             - Enable Treat username as secret
@@ -148,7 +148,7 @@
             - Description: nexus-credentials
             - Click on Create    
 
-        3)  ###### Ansible deployment server username & password (ansible-deploy-server-credentials)
+          ###### Ansible deployment server username & password (ansible-deploy-server-credentials)
             - Kind: Username with password                  
             - Username: ansadmin
             - Enable Treat username as secret
@@ -157,12 +157,34 @@
             - Description: ansible-deploy-server-credentials
             - Click on Create    
 
-        4)  ###### Slack secret token (slack-token)
+          ###### Slack secret token (slack-token)
             - Kind: Secret text            
             - Secret: Place the Integration Token Credential ID (Note: Generate for slack setup)
             - ID: slack-token
             - Description: slack-token
             - Click on Create                 
+
+6)  #### Configure system:    
+
+          - Click on Manage Jenkins --> Global Tool Configuration
+            - Go to section SonarQube servers --> **Add SonarQube **
+            - Name: **SonarQube**
+            - Server URL: http://REPLACE-WITH-SONARQUBE-SERVER-PRIVATE-IP:9000  (replace SonarQube with private IP here)
+            - Server authentication token: select 'sonarqube-token'
+            - Click on Save    
+
+          - Click on Manage Jenkins --> Configure System
+            - Go to section Prometheus
+            - Collecting metrics period in seconds: **15**
+            - Click on Save
+
+          - Click on Manage Jenkins --> Configure System
+            - Go to section Slack
+            - Use new team subdomain & integration token credentials created in the above slack joining step
+            - Workspace: **Replace with Team Subdomain value** (created above)
+            - Credentials: select 'slack-token' credentials (created above) 
+            - Default channel / member id: #general
+            - Click on Save  
 
 
 ### SonarQube setup
